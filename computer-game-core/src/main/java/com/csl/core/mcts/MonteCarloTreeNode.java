@@ -59,7 +59,7 @@ public class MonteCarloTreeNode {
     }
 
     /**
-     * 因为输赢是相对的，所以得先得到当前的玩家是哪一方，再计算得分
+     * 因为输赢是相对的，所以得到当前的玩家是哪一方，再计算得分
      *
      * @return 当前节点得分
      */
@@ -71,7 +71,9 @@ public class MonteCarloTreeNode {
     }
 
     public double winRate() {
-        return score() / visits;
+        int currentPlayer = parent.state.getNextMove();
+        int loses = resultMap.getOrDefault(-1 * currentPlayer, 0);
+        return (double) (visits - loses) / visits;
     }
 
     /**
@@ -100,7 +102,7 @@ public class MonteCarloTreeNode {
      * @return 博弈结果
      */
     public int rollOut() {
-        BaseState tempState = ObjectUtil.clone(state);
+        BaseState tempState = ObjectUtil.cloneByStream(state);
         while (!tempState.isGameOver()) {
             List<? extends BaseAction> actions = tempState.getLegalActions();
             BaseAction action = rollOutPlicy(actions);
@@ -145,7 +147,7 @@ public class MonteCarloTreeNode {
                 .map(c -> (c.score() / c.visits) + p * Math.sqrt(2 * Math.log(visits) / c.visits))
                 .collect(Collectors.toList());
 
-        double maxWeight = Double.MIN_VALUE;
+        double maxWeight = -0x3f3f3f3f;
         int index = 0;
         for (int i = 0; i < weights.size(); i++) {
             if (weights.get(i) > maxWeight) {

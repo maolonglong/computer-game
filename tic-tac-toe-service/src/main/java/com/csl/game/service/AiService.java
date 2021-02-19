@@ -16,4 +16,6 @@ public interface AiService {
      * @return 最佳的走法
      */
     TicTacToeMove getBestMove(int[][] board, int nextMove);
+
+    double getWinRate();
 }

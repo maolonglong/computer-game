@@ -20,7 +20,7 @@ public class TicTacToeState extends BaseState {
 
     public TicTacToeState(int[][] board, int nextMove) {
         super(nextMove);
-        this.board = ObjectUtil.clone(board);
+        this.board = ObjectUtil.cloneByStream(board);
     }
 
     public TicTacToeState(int nextMove) {

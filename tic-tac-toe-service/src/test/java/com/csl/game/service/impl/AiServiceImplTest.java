@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class AiServiceImplTest {
 
     @Test
-    void getBestMove() {
+    void getBestMove1() {
         int[][] board = {
                 {1, 0, 0},
                 {0, -1, 0},
@@ -18,5 +18,17 @@ class AiServiceImplTest {
         };
         AiService service = new AiServiceImpl();
         System.out.println(service.getBestMove(board, -1));
+    }
+
+
+    @Test
+    void getBestMove2() {
+        int[][] board = {
+                {0, 0, 0},
+                {0, -1, -1},
+                {0, 0, 1},
+        };
+        AiService service = new AiServiceImpl();
+        System.out.println(service.getBestMove(board, 1));
     }
 }

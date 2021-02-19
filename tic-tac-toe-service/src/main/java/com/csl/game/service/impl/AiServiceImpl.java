@@ -21,6 +21,8 @@ public class AiServiceImpl implements AiService {
 
     private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##%");
 
+    private MonteCarloTreeNode node;
+
     @Override
     @SuppressWarnings("AlibabaUndefineMagicConstant")
     public TicTacToeMove getBestMove(int[][] board, int nextMove) {
@@ -29,12 +31,12 @@ public class AiServiceImpl implements AiService {
         MonteCarloTreeSearch mcts = new MonteCarloTreeSearch(state);
 
         TimeInterval timer = DateUtil.timer();
-        MonteCarloTreeNode newNode = mcts.bestAction(2000);
+        node = mcts.bestAction(4000);
         log.info("time: {}ms", timer.intervalMs());
 
-        int[][] newBoard = ((TicTacToeState) newNode.getState()).getBoard();
+        int[][] newBoard = ((TicTacToeState) node.getState()).getBoard();
 
-        log.info("win rate: {}", DECIMAL_FORMAT.format(newNode.winRate()));
+        log.info("win rate: {}", DECIMAL_FORMAT.format(node.winRate()));
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -46,5 +48,13 @@ public class AiServiceImpl implements AiService {
             }
         }
         return null;
+    }
+
+    @Override
+    public double getWinRate() {
+        if (node != null) {
+            return node.winRate();
+        }
+        return .0;
     }
 }

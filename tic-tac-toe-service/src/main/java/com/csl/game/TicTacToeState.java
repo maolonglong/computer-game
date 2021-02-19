@@ -1,11 +1,11 @@
 package com.csl.game;
 
+import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.ObjectUtil;
 import com.csl.core.mcts.BaseState;
 import com.csl.core.util.IntUtil;
 import com.csl.game.model.Consts;
-import com.google.common.base.Preconditions;
-import com.google.common.collect.Lists;
 
 import java.util.List;
 
@@ -30,7 +30,7 @@ public class TicTacToeState extends BaseState {
 
     @Override
     public TicTacToeState move(Object action) {
-        Preconditions.checkArgument(action instanceof TicTacToeMove);
+        Assert.isInstanceOf(TicTacToeMove.class, action);
         TicTacToeMove move = (TicTacToeMove) action;
         int[][] tempBoard = getBoard();
         tempBoard[move.getX()][move.getY()] = move.getValue();
@@ -44,7 +44,7 @@ public class TicTacToeState extends BaseState {
 
     @Override
     public List<TicTacToeMove> getLegalActions() {
-        List<TicTacToeMove> legalActions = Lists.newArrayList();
+        List<TicTacToeMove> legalActions = CollUtil.newArrayList();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
                 if (board[i][j] == 0) {

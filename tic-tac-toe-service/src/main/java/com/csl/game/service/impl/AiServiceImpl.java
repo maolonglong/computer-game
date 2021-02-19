@@ -7,7 +7,6 @@ import com.csl.core.mcts.MonteCarloTreeSearch;
 import com.csl.game.TicTacToeMove;
 import com.csl.game.TicTacToeState;
 import com.csl.game.service.AiService;
-import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.DecimalFormat;
@@ -26,7 +25,6 @@ public class AiServiceImpl implements AiService {
     @Override
     @SuppressWarnings("AlibabaUndefineMagicConstant")
     public TicTacToeMove getBestMove(int[][] board, int nextMove) {
-        Preconditions.checkArgument(board.length == 3 && board[0].length == 3);
         TicTacToeState state = new TicTacToeState(board, nextMove);
         MonteCarloTreeSearch mcts = new MonteCarloTreeSearch(state);
 

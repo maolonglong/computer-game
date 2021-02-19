@@ -1,9 +1,9 @@
 package com.csl.game;
 
+import cn.hutool.core.lang.Assert;
 import com.csl.game.model.Consts;
 import com.csl.game.service.AiService;
 import com.csl.game.service.impl.AiServiceImpl;
-import com.google.common.base.Preconditions;
 
 import java.text.DecimalFormat;
 
@@ -17,7 +17,7 @@ public class TicTacToeGame {
 
     private TicTacToeState state;
 
-    private boolean first;
+    private final boolean first;
 
     private int nextMove;
 
@@ -32,13 +32,13 @@ public class TicTacToeGame {
     }
 
     public void set(int i, int j) {
-        Preconditions.checkArgument(first ? nextMove == Consts.O : nextMove == Consts.X);
+        Assert.isTrue(first ? nextMove == Consts.O : nextMove == Consts.X);
         state = state.move(new TicTacToeMove(i, j, nextMove));
         nextMove = -nextMove;
     }
 
     public TicTacToeMove get() {
-        Preconditions.checkArgument(first ? nextMove == Consts.X : nextMove == Consts.O);
+        Assert.isTrue(first ? nextMove == Consts.X : nextMove == Consts.O);
         TicTacToeMove move = aiService.getBestMove(state.getBoard(), nextMove);
         state = state.move(move);
         nextMove = -nextMove;

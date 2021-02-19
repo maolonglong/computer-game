@@ -1,9 +1,8 @@
 package com.csl.core.mcts;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 
 import java.util.List;
 import java.util.Map;
@@ -51,8 +50,8 @@ public class MonteCarloTreeNode {
     private final List<? extends BaseAction> untriedActions;
 
     public MonteCarloTreeNode(BaseState state, MonteCarloTreeNode parent) {
-        resultMap = Maps.newHashMap();
-        children = Lists.newArrayList();
+        resultMap = CollUtil.newHashMap();
+        children = CollUtil.newArrayList();
         this.state = state;
         this.parent = parent;
         this.untriedActions = state.getLegalActions();

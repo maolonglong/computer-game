@@ -4,15 +4,13 @@ import cn.hutool.core.util.StrUtil;
 import com.csl.game.TicTacToeGame;
 import com.csl.game.TicTacToeMove;
 import com.csl.game.model.Consts;
+import com.csl.game.ui.util.ShapeUtil;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXToggleButton;
 import javafx.fxml.FXML;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polyline;
 import javafx.scene.shape.Shape;
 
 /**
@@ -52,7 +50,6 @@ public class IndexController {
     private int tempJ;
 
     public void initialize() {
-//        game = new TicTacToeGame(first.isSelected());
     }
 
     @FXML
@@ -66,8 +63,7 @@ public class IndexController {
             flag = true;
             tempI = row;
             tempJ = col;
-            tempShape = firstButton.isSelected() ? generateCircle() : generatePolyline();
-            board.add(tempShape, col, row);
+            drawHumanChess(row, col);
             okButton.setDisable(false);
             cancelButton.setDisable(false);
         }
@@ -85,10 +81,7 @@ public class IndexController {
         game = new TicTacToeGame(firstButton.isSelected());
         vis = new boolean[3][3];
         if (firstButton.isSelected()) {
-            TicTacToeMove move = game.get();
-            board.add(generatePolyline(), move.getY(), move.getX());
-            vis[move.getX()][move.getY()] = true;
-            log.appendText(StrUtil.format("当前 AI 胜率: {}\n", game.getWinRate()));
+            doSearch();
         }
         flag = false;
         firstButton.setDisable(true);
@@ -106,24 +99,6 @@ public class IndexController {
         cancelButton.setDisable(true);
     }
 
-    private Circle generateCircle() {
-        Circle circle = new Circle();
-        circle.setFill(null);
-        circle.setStroke(Color.SKYBLUE);
-        circle.setRadius(100);
-        circle.setStrokeWidth(6);
-        return circle;
-    }
-
-    private Polyline generatePolyline() {
-        Polyline polyline = new Polyline();
-        polyline.setStrokeWidth(6);
-        polyline.setStroke(Color.PINK);
-        polyline.getPoints().addAll(0.0, 0.0, 200.0, 200.0,
-                100.0, 100.0, 0.0, 200.0, 200.0, 0.0);
-        return polyline;
-    }
-
     @FXML
     public void handleOk(MouseEvent event) {
         game.set(tempI, tempJ);
@@ -131,17 +106,20 @@ public class IndexController {
         if (checkGameResult()) {
             return;
         }
-        TicTacToeMove move = game.get();
-        board.add(firstButton.isSelected() ? generatePolyline() : generateCircle(),
-                move.getY(), move.getX());
-        log.appendText(StrUtil.format("当前 AI 胜率: {}\n", game.getWinRate()));
-        vis[move.getX()][move.getY()] = true;
+        doSearch();
         if (checkGameResult()) {
             return;
         }
         okButton.setDisable(true);
         cancelButton.setDisable(true);
         flag = false;
+    }
+
+    private void doSearch() {
+        TicTacToeMove move = game.get();
+        drawComputerChess(move);
+        log.appendText(StrUtil.format("当前 AI 胜率: {}\n", game.getWinRate()));
+        vis[move.getX()][move.getY()] = true;
     }
 
     @FXML
@@ -150,6 +128,18 @@ public class IndexController {
         okButton.setDisable(true);
         cancelButton.setDisable(true);
         flag = false;
+    }
+
+    private void drawComputerChess(TicTacToeMove move) {
+        board.add(firstButton.isSelected() ?
+                        ShapeUtil.generatePolyline() : ShapeUtil.generateCircle(),
+                move.getY(), move.getX());
+    }
+
+    private void drawHumanChess(int row, int col) {
+        tempShape = firstButton.isSelected() ?
+                ShapeUtil.generateCircle() : ShapeUtil.generatePolyline();
+        board.add(tempShape, col, row);
     }
 
     private boolean checkGameResult() {

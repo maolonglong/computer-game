@@ -1,5 +1,6 @@
 package com.csl.game.service.impl;
 
+import com.csl.game.TicTacToeState;
 import com.csl.game.service.AiService;
 import org.junit.jupiter.api.Test;
 
@@ -16,8 +17,9 @@ class AiServiceImplTest {
                 {0, -1, 0},
                 {0, 1, -1},
         };
+        TicTacToeState state = new TicTacToeState(board, -1);
         AiService service = new AiServiceImpl();
-        System.out.println(service.getBestMove(board, -1));
+        System.out.println(service.getBestAction(state));
     }
 
 
@@ -28,7 +30,8 @@ class AiServiceImplTest {
                 {0, -1, -1},
                 {0, 0, 1},
         };
+        TicTacToeState state = new TicTacToeState(board, 1);
         AiService service = new AiServiceImpl();
-        System.out.println(service.getBestMove(board, 1));
+        System.out.println(service.getBestAction(state));
     }
 }

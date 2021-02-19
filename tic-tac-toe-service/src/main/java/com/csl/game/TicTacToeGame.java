@@ -19,30 +19,29 @@ public class TicTacToeGame {
 
     private final boolean first;
 
-    private int nextMove;
-
     /**
      * @param first AI 是否先手，先手方使用 X，后手方使用 O
      */
     public TicTacToeGame(boolean first) {
         aiService = new AiServiceImpl();
-        nextMove = Consts.X;
         this.first = first;
-        state = new TicTacToeState(nextMove);
+        state = new TicTacToeState(Consts.X);
+    }
+
+    public int nextMove() {
+        return state.getNextMove();
     }
 
     public void set(int i, int j) {
-        Assert.isTrue(first ? nextMove == Consts.O : nextMove == Consts.X);
-        state = state.move(new TicTacToeMove(i, j, nextMove));
-        nextMove = -nextMove;
+        Assert.isTrue(first ? nextMove() == Consts.O : nextMove() == Consts.X);
+        state = state.move(new TicTacToeMove(i, j, nextMove()));
     }
 
     public TicTacToeMove get() {
-        Assert.isTrue(first ? nextMove == Consts.X : nextMove == Consts.O);
-        TicTacToeMove move = aiService.getBestMove(state.getBoard(), nextMove);
-        state = state.move(move);
-        nextMove = -nextMove;
-        return move;
+        Assert.isTrue(first ? nextMove() == Consts.X : nextMove() == Consts.O);
+        TicTacToeMove action = aiService.getBestAction(state);
+        state = state.move(action);
+        return action;
     }
 
     public int getGameResult() {

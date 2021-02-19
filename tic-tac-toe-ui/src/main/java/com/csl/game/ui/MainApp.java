@@ -1,6 +1,5 @@
 package com.csl.game.ui;
 
-import cn.hutool.setting.dialect.Props;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,15 +12,12 @@ import javafx.stage.Stage;
  */
 public class MainApp extends Application {
 
-    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
-    private final Props props = new Props("application.properties");
-
-    @SuppressWarnings("ConstantConditions")
     @Override
+    @SuppressWarnings("ConstantConditions")
     public void start(Stage primaryStage) throws Exception {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         Parent root = FXMLLoader.load(cl.getResource("views/index.fxml"));
-        primaryStage.setTitle(props.getStr("game.title"));
+        primaryStage.setTitle("Tic-Tac-Toe");
         primaryStage.setScene(new Scene(root));
         primaryStage.setResizable(false);
         primaryStage.show();
